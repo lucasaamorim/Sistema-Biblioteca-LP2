@@ -39,8 +39,13 @@ public class Biblioteca {
         return emprestimo;
     }
 
-    public Emprestimo registrarDevolucao(Usuario u, Livro l) {
-        
+    public Emprestimo registrarDevolucao(Emprestimo e, Date dataDevolvido) {
+        GerenciadorDeDados gd = new GerenciadorDeDados();
+        if (gd.consultarEmprestimoBanco(e)) {
+            gd.registrarDevolucaoTabela(e,dataDevolvido);
+        } else {
+            System.out.println("ERRO: Empréstimo inexistente");
+        }
     }
 
     public boolean adicionarLivro() {
