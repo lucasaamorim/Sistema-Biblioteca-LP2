@@ -53,7 +53,11 @@ public class Biblioteca {
     }
 
     public ArrayList<Livro> listarLivros() {
-        
+        // o método consultarTodosLivrosBanco()
+        // já possui tratamento de erros 
+        GerenciadorDeDados gd = new GerenciadorDeDados();
+        // caso falhe retorna null
+        return gd.consultarTodosLivrosBanco();
     }
 
     public boolean adicionarUsuario() {
