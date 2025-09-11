@@ -1,6 +1,6 @@
 package br.com.universidade.biblio;
 
-public class Util {
+public class Utils {
     public boolean validarTipoString() {
 
     }
