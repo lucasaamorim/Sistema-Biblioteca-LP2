@@ -6,6 +6,7 @@ import br.com.universidade.biblio.Emprestimo;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Biblioteca {
     private Usuario usuario;
@@ -18,38 +19,100 @@ public class Biblioteca {
         this.utils = new Utils();
     }
 
-    public Emprestimo registrarEmprestimo(Usuario u, Livro l, Date dataDeDevolucao) {
+    private boolean livrosIguais(Livro livro1, Livro livro2) {
+        if(livro1.getTitulo().equalsIgnoreCase(livro2.getTitulo())
+        && livro1.getAutor().equalsIgnoreCase(livro2.getAutor())
+        && livro1.getAno() == livro2.getAno()) {
+            // Livro foi encontrado no GD
+            return true;
+        }
+        return false;
+    }
+
+    private boolean validarUsuario(Usuario u) {
         GerenciadorDeDados gd = new GerenciadorDeDados();
-        Emprestimo emprestimo = new Emprestimo(new Date(), dataDeDevolucao);
-        
-        // if(gd.consultarUsuarioBanco() == null) {
-        //     System.out.println("Usuário inexistente.");
-        //     return null;
-        // }
+        if(gd.consultarUsuarioPorMatricula(u.getMatricula()) == null) {
+            System.out.println("Usuário inexistente.");
+            return false;
+        }
+        return true;
+    }
 
-        // if(gd.consultarLivroBanco() == null) {
-        //     System.out.println("Livro inexistente");
-        //     return null;
-        // }
-
+    private boolean validarDataDeDevolucao(Date dataDeDevolucao) {
         if(!utils.validarTipoData(dataDeDevolucao) || dataDeDevolucao.before(new Date())) {
             System.out.println("Data de devolução inválida. Realize um empréstimo com a data após a data atual.");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean livroEstaRegistrado(Livro l) {
+        GerenciadorDeDados gd = new GerenciadorDeDados();
+        List<Livro> livros = gd.consultarTodosLivrosBanco();
+        boolean livroRegistrado = false;
+        
+        for(Livro livro: livros) {
+            if(livrosIguais(livro, l)) {
+                // Livro foi encontrado no GD
+                livroRegistrado = true;
+                break;
+            }
+        }
+
+        if(!livroRegistrado) {
+            System.out.println("Livro não registrado na biblioteca.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean livroEstaDisponivel(Livro l) {
+        GerenciadorDeDados gd = new GerenciadorDeDados();
+        List<Emprestimo> emprestimos = gd.consultarTodosEmprestimosBanco();
+        int qtdLivrosEmprestados = 0;
+
+        for(Emprestimo emp: emprestimos) {
+            if(livrosIguais(emp.getLivro(), l)) {
+                qtdLivrosEmprestados++;
+            }
+        }
+
+        if(qtdLivrosEmprestados >= l.getQuantidade()) {
+            System.out.println("Livro indisponível no momento.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean validarLivro(Livro l) {
+        if(!livroEstaRegistrado(l)) return false;
+        if(!livroEstaDisponivel(l)) return false;
+        return true;
+    }
+
+    private boolean validarEmprestimo(Emprestimo emprestimo) {
+        if(!validarUsuario(emprestimo.getUsuario())) return false;
+        if(!validarDataDeDevolucao(emprestimo.getDevolucao())) return false;
+        if(!validarLivro(emprestimo.getLivro())) return false;
+        return true;
+    }
+
+    public Emprestimo registrarEmprestimo(Usuario u, Livro l, Date dataDeDevolucao) {
+        GerenciadorDeDados gd = new GerenciadorDeDados();
+        Emprestimo emprestimo = new Emprestimo(u, l, new Date(), dataDeDevolucao);
+        
+        if(!validarEmprestimo(emprestimo)) {
             return null;
         }
 
-        if(!l.isDisponivel) {
-            System.out.println("Falha ao registrar empréstimo. Livro não está disponível no momento.");
-            return null;
-        }
-
-        if(gd.registrarEmprestimoBanco(emprestimo)) {
-            l.setDisponivel(false);
-        } else {
+        if(!gd.registrarEmprestimoBanco(emprestimo)) {
             System.out.println("Falha ao registrar empréstimo.");
             return null;
-        }
+        } 
 
-        u.adicionarEmprestimo(l);
+        // u.adicionarEmprestimo(l);
         return emprestimo;
     }
 
