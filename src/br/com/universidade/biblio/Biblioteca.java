@@ -151,7 +151,7 @@ public class Biblioteca {
             return false;
         }
 
-        if (gd.registrarLivroBanco(usuario)){
+        if (gd.registrarUsuarioBanco(usuario)){
             return true;
         } else {
             System.out.println("Falha ao adicionar usuário");
