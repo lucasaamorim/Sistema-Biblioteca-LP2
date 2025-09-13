@@ -145,7 +145,18 @@ public class Biblioteca {
     }
 
     public boolean adicionarUsuario() {
+        GerenciadorDeDados gd = new GerenciadorDeDados();
+        if (gd.consultarUsuarioPorMatricula(usuario.getMatricula()) != null){
+            System.out.println("ERRO: Usuário já adicionado");
+            return false;
+        }
 
+        if (gd.registrarLivroBanco(usuario)){
+            return true;
+        } else {
+            System.out.println("Falha ao adicionar usuário");
+            return false;
+        }
     }
 
     public ArrayList<Usuario> listarUsuarios() { // Seguindo o mesmo padrao de listarLivros
