@@ -141,7 +141,8 @@ public class Biblioteca {
 
     }
 
-    public ArrayList<Usuario> listarUsuarios() {
-
+    public ArrayList<Usuario> listarUsuarios() { // Seguindo o mesmo padrao de listarLivros
+        GerenciadorDeDados gd = new GerenciadorDeDados();
+        return gd.consultarTodosUsuariosBanco();
     }
 }
