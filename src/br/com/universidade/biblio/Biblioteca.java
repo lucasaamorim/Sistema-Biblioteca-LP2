@@ -125,8 +125,15 @@ public class Biblioteca {
         }
     }
 
-    public boolean adicionarLivro() {
-
+    public boolean adicionarLivro(Livro livro) {
+        GerenciadorDeDados gd = new GerenciadorDeDados();
+        if (!livroEstaRegistrado(livro)) {
+            System.out.println("ERRO: Livro já adicionado");
+            return false;
+        } else {
+            gd.registrarLivroBanco(livro);
+            return true;
+        }
     }
 
     public ArrayList<Livro> listarLivros() {
