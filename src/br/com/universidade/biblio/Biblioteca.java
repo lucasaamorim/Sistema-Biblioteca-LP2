@@ -13,6 +13,7 @@ public class Biblioteca {
     private Livro livro;
     private Utils utils;
 
+    /// Ctor Padrão
     public Biblioteca() {
         this.usuario = new Usuario();
         this.livro = new Livro();
@@ -99,6 +100,13 @@ public class Biblioteca {
         return true;
     }
 
+    /**
+     * Registra um Empréstimo, também lida com as validações necessárias nos parâmetros passados
+     * @param u Usuário que pegou o Livro emprestado
+     * @param l Livro a ser Emprestado
+     * @param dataDeDevolucao Prazo de Devolução
+     * @return Instância do empréstimo ativo
+    */
     public Emprestimo registrarEmprestimo(Usuario u, Livro l, Date dataDeDevolucao) {
         GerenciadorDeDados gd = new GerenciadorDeDados();
         Emprestimo emprestimo = new Emprestimo(u, l, new Date(), dataDeDevolucao);
@@ -116,6 +124,12 @@ public class Biblioteca {
         return emprestimo;
     }
 
+    /** 
+     * Registra uma devolução, realizando validações nos parâmetros passados
+     * @param e Instância do Empréstimo (que é devolvida pelo método registrarEmprestimo pra Main)
+     * @param dataDevolvido Data em que o Livro foi devolvido
+     * @return a Instância do Empréstimo atualizada com a devolução ou null caso a instância de empréstimo seja inválida
+     * */
     public Emprestimo registrarDevolucao(Emprestimo e, Date dataDevolvido) {
         GerenciadorDeDados gd = new GerenciadorDeDados();
         if (!validarEmprestimo(e)) {
@@ -131,7 +145,12 @@ public class Biblioteca {
             return e;
         }
     }
-
+    
+    /**
+     * Adiciona um Livro no Banco de Dados
+     * @param livro Livro a ser registrado
+     * @return true caso o Livro tenha sido registrado, false caso contrário.
+    */
     public boolean adicionarLivro(Livro livro) {
         GerenciadorDeDados gd = new GerenciadorDeDados();
         if (!livroEstaRegistrado(livro)) {
@@ -143,6 +162,10 @@ public class Biblioteca {
         }
     }
 
+    /**
+     * Lista os Livros presentes no Banco de Dados
+     * @return A lista de Livros do Banco de Dados
+     */
     public ArrayList<Livro> listarLivros() {
         // o método consultarTodosLivrosBanco()
         // já possui tratamento de erros 
@@ -151,6 +174,10 @@ public class Biblioteca {
         return gd.consultarTodosLivrosBanco();
     }
 
+    /**
+     * Adiciona um Usuário no Banco de Dados
+     * @return true se o Usuário foi registrado, false caso contrário.
+     */
     public boolean adicionarUsuario() {
         GerenciadorDeDados gd = new GerenciadorDeDados();
         if (gd.consultarUsuarioPorMatricula(usuario.getMatricula()) != null){
@@ -166,6 +193,10 @@ public class Biblioteca {
         }
     }
 
+    /**
+     * Lista os Usuários presentes no Banco de Dados
+     * @return A lista de Usuários do Banco de Dados
+     */
     public ArrayList<Usuario> listarUsuarios() { // Seguindo o mesmo padrao de listarLivros
         GerenciadorDeDados gd = new GerenciadorDeDados();
         return gd.consultarTodosUsuariosBanco();
