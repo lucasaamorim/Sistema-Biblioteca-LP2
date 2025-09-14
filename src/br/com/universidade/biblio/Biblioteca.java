@@ -118,10 +118,17 @@ public class Biblioteca {
 
     public Emprestimo registrarDevolucao(Emprestimo e, Date dataDevolvido) {
         GerenciadorDeDados gd = new GerenciadorDeDados();
-        if (gd.consultarEmprestimoBanco(e)) {
-            gd.registrarDevolucaoTabela(e,dataDevolvido);
+        if (!validarEmprestimo(e)) {
+            return null;
         } else {
-            System.out.println("ERRO: Empréstimo inexistente");
+            // Precisa adicionar um desses dois membros + setter, para poder determinar se o empréstimo está ativo ou não
+            // (e a devolução fazer algo)
+            e.setDevolvido(true);
+            // e.setDataDevolvido(new Date());
+
+            // Ou também remover o empréstimo do banco de dados, ver qual é melhor (teria que mudar o tipo de retorno)
+            //gd.removerEmprestimoBanco(e)
+            return e;
         }
     }
 
