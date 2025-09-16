@@ -178,7 +178,7 @@ public class Biblioteca {
      * Adiciona um Usuário no Banco de Dados
      * @return true se o Usuário foi registrado, false caso contrário.
      */
-    public boolean adicionarUsuario() {
+    public boolean adicionarUsuario(Usuario usuario) {
         GerenciadorDeDados gd = new GerenciadorDeDados();
         if (gd.consultarUsuarioPorMatricula(usuario.getMatricula()) != null){
             System.out.println("ERRO: Usuário já adicionado");
