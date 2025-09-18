@@ -9,15 +9,11 @@ import java.util.Date;
 import java.io.IOException;
 
 public class Biblioteca {
-    private Usuario usuario;
-    private Livro livro;
     private Utils utils;
 
     /// Ctor Padrão
     public Biblioteca() {
         //FIXME: Construtores padrão para o Usuário e Livro não foram criados
-        this.usuario = new Usuario();
-        this.livro = new Livro();
         this.utils = new Utils();
     }
 
