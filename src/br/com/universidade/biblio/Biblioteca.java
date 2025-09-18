@@ -72,11 +72,11 @@ public class Biblioteca {
             int qtdLivrosEmprestados = 0;
     
             for(Emprestimo emp: emprestimos) {
-                if(gd.livrosIguais(emp.getLivro(), l)) {
+                if(gd.livrosIguais(emp.getLivro(), l) && emp.getDevolucao() == null) {
                     qtdLivrosEmprestados++;
                 }
             }
-            //FIXME: Método (ainda) não existe
+            //TODO: Método (ainda) não existe
             if(qtdLivrosEmprestados >= l.getQuantidade()) {
                 System.out.println("Livro indisponível no momento.");
                 return false;
@@ -113,7 +113,7 @@ public class Biblioteca {
         try {
             GerenciadorDeDados gd = new GerenciadorDeDados("banco.json");
             // FIXME: Construtor inválido
-            Emprestimo emprestimo = new Emprestimo(u, l, new Date(), dataDeDevolucao);
+            Emprestimo emprestimo = new Emprestimo(u, l, new Date(), null);
             
             if(!validarEmprestimo(emprestimo)) {
                 return null;
