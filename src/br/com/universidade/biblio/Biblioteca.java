@@ -17,16 +17,6 @@ public class Biblioteca {
         this.utils = new Utils();
     }
 
-    private boolean livrosIguais(Livro livro1, Livro livro2) {
-        if(livro1.getTitulo().equalsIgnoreCase(livro2.getTitulo())
-        && livro1.getAutor().equalsIgnoreCase(livro2.getAutor())
-        && livro1.getAno() == livro2.getAno()) {
-            // Livro foi encontrado no GD
-            return true;
-        }
-        return false;
-    }
-
     private boolean validarUsuario(Usuario u) {
         try {
             GerenciadorDeDados gd = new GerenciadorDeDados("banco.json");
@@ -56,7 +46,7 @@ public class Biblioteca {
             boolean livroRegistrado = false;
             
             for(Livro livro: livros) {
-                if(livrosIguais(livro, l)) {
+                if(gd.livrosIguais(livro, l)) {
                     // Livro foi encontrado no GD
                     livroRegistrado = true;
                     break;
