@@ -144,13 +144,14 @@ public class Biblioteca {
             if (!validarEmprestimo(e)) {
                 return null;
             } else {
-                // TODO: Precisa adicionar um desses dois membros + setter, para poder determinar se o empréstimo está ativo ou não
-                // (e a devolução fazer algo)
-                e.setDevolvido(true);
-                // e.setDataDevolvido(new Date());
-    
-                // Ou também remover o empréstimo do banco de dados, ver qual é melhor (teria que mudar o tipo de retorno)
-                //gd.removerEmprestimoBanco(e)
+                List<Emprestimo> listaEmprestimos = gd.consultarTodosEmprestimosBanco();
+                for (Emprestimo emprestimo : listaEmprestimos) {
+                  if (emprestimosIguais(e,emprestimo)) {
+                    e = emprestimo;
+                    break;
+                  }
+                }
+                e.setDevolucao(dataDevolvido);
                 return e;
             }
         } catch(IOException ie) {
