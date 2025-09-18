@@ -72,7 +72,7 @@ public class Biblioteca {
             int qtdLivrosEmprestados = 0;
     
             for(Emprestimo emp: emprestimos) {
-                if(livrosIguais(emp.getLivro(), l)) {
+                if(gd.livrosIguais(emp.getLivro(), l)) {
                     qtdLivrosEmprestados++;
                 }
             }
